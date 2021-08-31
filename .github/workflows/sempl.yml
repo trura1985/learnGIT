@@ -6,7 +6,7 @@ name: my_ferst_action.yml
 on:
   push:
     branches:
-        - main
+        - master
         
 jobs:
   my_test1:
