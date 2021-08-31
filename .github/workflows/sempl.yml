@@ -13,13 +13,14 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Print Hello world
+    - name: Print Hello world in test1
       run : echo "Hello World from test job"
     
      
 
   my_deploy:
      runs-on: ubuntu-latest
+     needs: [my_test1] #job my_deploy запуститься только после выполнения job my_test
      steps:
-     - name: print Hello Message
+     - name: print Hello Message in deploy
        run : echo "Hello World from Deploy job"
