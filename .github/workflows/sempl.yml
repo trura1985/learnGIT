@@ -1,6 +1,9 @@
 # This is a basic workflow to help you get started with Actions
 
 name: my_ferst_action.yml
+env:
+  APPLICATION_NAME   : "MyFlask"
+  DEPLOY_PACKAGE_NAME: "flask-dep-ver-${{ github.sha }}" #github.sha-код коммита
 
 # Controls when the workflow will run
 on:
@@ -9,13 +12,18 @@ on:
         - master
         
 jobs:
-  my_test1:
+  my_test1 :
     runs-on: ubuntu-latest
     
     steps:
     - name: Print Hello world in test1
       run : echo "Hello World from test job"
     
+    - name: exec few commands
+      run : |
+         echo "Hello msg1"
+         echo "Hello msg2"
+         echo "App name: ${{ env.APPLICATION_NAME }}"#вызов env из шапки
      
 
   my_deploy:
@@ -24,3 +32,5 @@ jobs:
      steps:
      - name: print Hello Message in deploy
        run : echo "Hello World from Deploy job"
+     - name: print Dep Package
+       run : echo "Dep pkg name is "${{ env.DEPLOY_PACKAGE_NAME }}"
