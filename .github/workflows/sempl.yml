@@ -25,7 +25,12 @@ jobs:
          echo "Hello msg2"
          echo "App name: ${{ env.APPLICATION_NAME }}"#вызов env из шапки
      
-
+    - name : Git clone My Repo
+      uses: actions/checkout@v1  #команда копирования репозитория на создаваемый докер контент
+      
+    - name: list curr folder
+      run : ls -la
+       
   my_deploy:
      runs-on: ubuntu-latest
      needs: [my_test1] #job my_deploy запуститься только после выполнения job my_test
@@ -34,3 +39,7 @@ jobs:
        run : echo "Hello World from Deploy job"
      - name: print Dep Package
        run : echo "Dep pkg name is ${{ env.DEPLOY_PACKAGE_NAME }}"
+     - name: test some pkg if there here 1 aws
+       run : aws --version
+     - name: test some pkg if there here 1 zip
+       run : zip
