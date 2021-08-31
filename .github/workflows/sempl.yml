@@ -37,9 +37,12 @@ jobs:
      steps:
      - name: print Hello Message in deploy
        run : echo "Hello World from Deploy job"
+     
      - name: print Dep Package
-       run : echo "Dep pkg name is ${{ env.DEPLOY_PACKAGE_NAME }}"
+       run : echo "Dep pkg name is ${{ env.DEPLOY_PACKAGE_NAME }}" #вызов env из шапки
+     
      - name: test some pkg if there here 1 aws
        run : aws --version
+     
      - name: test some pkg if there here 1 zip
-       run : zip
+       run : zip --version
