@@ -13,10 +13,10 @@ on:
         
 jobs:
   my_test1 :
-    runs-on: ubuntu-latestzzz
+    runs-on: ubuntu-latest
     
     steps:
-    - name: Print Hello world in test1
+    - name Print Hello world in test1
       run : echo "Hello World from test job"
     
     - name: exec few commands
