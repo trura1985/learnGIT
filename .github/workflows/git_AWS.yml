@@ -1,37 +1,48 @@
-name: CI-CD-Pipeline-to-AWS-ElasticBeanstalk
+# This is a basic workflow to help you get started with Actions
+
+name: my-ferst-action
 env:
-  EB_PACKAGE_S3_BUCKET_NAME : "github-flask-app-pack"
-  EB_APPLICATION_NAME       : "GitHubFlask_lesson"
-  EB_ENVIRONMENT_NAME       : "Githubflasklesson-env"
-  DEPLOY_PACKAGE_NAME       : "flask_app_${{ github.sha }}.zip" 
-  AWS_REGION_NAME           : "eu-north-1"
-  
-on: 
+  APPLICATION_NAME   : "MyFlask"
+  DEPLOY_PACKAGE_NAME: "flask-dep-ver-${{ github.sha }}" #github.sha-код коммита
+
+# Controls when the workflow will run
+on:
   push:
-    branches: 
-      - master
-      
+    branches:
+        - master
+        
 jobs:
-    my_ci_part:
-       runs-on: ubuntu-latest
+  my_test1 :
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Print Hello world in test1
+      run : echo "Hello World from test job"
+    
+    - name: exec few commands
+      run : |
+         echo "Hello msg1"
+         echo "Hello msg2"
+         echo "App name: ${{ env.APPLICATION_NAME }}"#вызов env из шапки
      
-       steps:
-       - name: Git clone our repo
-         uses: actions/checkout@v1
+    - name : Git clone My Repo
+      uses: actions/checkout@v1  #команда копирования репозитория на создаваемый докер контент
+      
+    - name: list curr folder
+      run : ls -la
        
-       - name: Create ZIP depl pack 
-         run : zip -r ${{ env.DEPLOY_PACKAGE_NAME }} ./ -x *.git*
-       
-       - name: Configure AWS Credentials 
-         uses: aws-actions/configure-aws-credentials@v1
-         with:
-           aws-access-key-id     : ${{ secrets.MY_AWS_ACCESS_KEY }}
-           aws-secret-access-key : ${{ secrets.MY_AWS_SECRET_KEY }}
-           aws-region            : ${{ env.AWS_REGION_NAME }}
-           
-       - name: copy depl package to s3 bucket
-         run : aws s3 cp ${{ env.DEPLOY_PACKAGE_NAME }}  s3://${{ env.EB_PACKAGE_S3_BUCKET_NAME }}
-         
-       - name: print Happy Massage for CI
-         run : echo "CI Pieplan part finished success"
-         
+  my_deploy:
+     runs-on: ubuntu-latest
+     needs: [my_test1] #job my_deploy запуститься только после выполнения job my_test
+     steps:
+     - name: print Hello Message in deploy
+       run : echo "Hello World from Deploy job"
+     
+     - name: print Dep Package
+       run : echo "Dep pkg name is ${{ env.DEPLOY_PACKAGE_NAME }}" #вызов env из шапки
+     
+     - name: test some pkg if there here 1 aws
+       run : aws --version
+     
+     - name: test some pkg if there here 1 zip
+       run : zip --version 
